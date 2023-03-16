@@ -9,6 +9,7 @@ const filePathtoObject = (filePath) => {
   const object = JSON.parse(file);
   return object;
 };
+
 const genDiff = (filepath1, filepath2) => {
   const obj1 = filePathtoObject(filepath1);
   const obj2 = filePathtoObject(filepath2);
@@ -23,7 +24,7 @@ const genDiff = (filepath1, filepath2) => {
 
     const lines = keys.reduce((acc, key) => {
       if (_.isObject(node1[key]) && _.isObject(node2[key])) {
-        return [...acc, `${currentIndent.repeat(2)}${key}: ${iter(node1[key], node2[key], depth + 2)}`];
+        return [...acc, `${currentIndent}${currentIndent}${key}: ${iter(node1[key], node2[key], depth + 2)}`];
       }
 
       /* if (_.isObject(node1[key])) {
