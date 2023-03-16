@@ -4,9 +4,9 @@ import { cwd } from 'node:process';
 import _ from 'lodash';
 
 const genDiff = (filepath1, filepath2) => {
-  const correctFilepath1 = path.resolve(cwd(), filepath1);
+  const correctFilepath1 = path.resolve(cwd());
   console.log(correctFilepath1);
-  const correctFilepath2 = path.resolve(cwd(), filepath2);
+  const correctFilepath2 = path.resolve(cwd());
   console.log(correctFilepath1);
   const file1 = fs.readFileSync(correctFilepath1, 'utf-8');
   const file2 = fs.readFileSync(correctFilepath2, 'utf-8');
