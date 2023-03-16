@@ -26,12 +26,12 @@ const genDiff = (filepath1, filepath2) => {
         return [...acc, `${currentIndent.repeat(2)}${key}: ${iter(node1[key], node2[key], depth + 2)}`];
       }
 
-      /*if (_.isObject(node1[key])) {
+      /* if (_.isObject(node1[key])) {
 
       }
       if (_.isObject(node2[key])) {
 
-      }*/
+      } */
 
       if (node1[key] === node2[key]) {
         return [...acc, `${currentIndent}  ${key}: ${node1[key]}`];
