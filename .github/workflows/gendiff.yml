@@ -1,0 +1,10 @@
+name: gendiff
+on: push
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: make install
+        run: make lint
+        run: make test
