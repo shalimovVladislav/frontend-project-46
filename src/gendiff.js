@@ -3,16 +3,15 @@ import path from 'node:path';
 import { cwd } from 'node:process';
 import _ from 'lodash';
 
+const filePathtoObject = (filePath) => {
+  const correctFilePath = path.resolve(cwd(), filePath);
+  const file = fs.readFileSync(correctFilePath, 'utf-8');
+  const object = JSON.parse(file);
+  return object;
+};
 const genDiff = (filepath1, filepath2) => {
-  console.log(cwd());
-  const correctFilepath1 = path.resolve(cwd(), filepath1);
-  console.log(correctFilepath1);
-  const correctFilepath2 = path.resolve(cwd(), filepath2);
-  console.log(correctFilepath1);
-  const file1 = fs.readFileSync(correctFilepath1, 'utf-8');
-  const file2 = fs.readFileSync(correctFilepath2, 'utf-8');
-  const obj1 = JSON.parse(file1);
-  const obj2 = JSON.parse(file2);
+  const obj1 = filePathtoObject(filepath1);
+  const obj2 = filePathtoObject(filepath2);
   const spacesCount = 2;
   const replacer = ' ';
   const iter = (node1, node2, depth) => {
