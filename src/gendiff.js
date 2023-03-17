@@ -1,14 +1,5 @@
-import * as fs from 'node:fs';
-import path from 'node:path';
-import { cwd } from 'node:process';
 import _ from 'lodash';
-
-const filePathtoObject = (filePath) => {
-  const correctFilePath = path.resolve(cwd(), filePath);
-  const file = fs.readFileSync(correctFilePath, 'utf-8');
-  const object = JSON.parse(file);
-  return object;
-};
+import filePathtoObject from './parsers.js';
 
 const genDiff = (filepath1, filepath2) => {
   const obj1 = filePathtoObject(filepath1);
