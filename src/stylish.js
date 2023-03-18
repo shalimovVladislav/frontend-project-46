@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import stringify from './stringify.js';
+
 const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
   const iter = (nodes, depth) => {
     const indentSize = depth * spacesCount;
@@ -10,13 +13,13 @@ const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
         case 'nested':
           return `${currentIndent}${node.key}: ${iter(node.children, depth + 1)}`;
         case 'remove':
-          return `${shiftLeftIndent}- ${node.key}: ${node.val}`;
+          return `${shiftLeftIndent}- ${node.key}: ${stringify(node.val, depth + 1, replacer, spacesCount)}`;
         case 'add':
-          return `${shiftLeftIndent}+ ${node.key}: ${node.val}`;
+          return `${shiftLeftIndent}+ ${node.key}: ${stringify(node.val, depth + 1, replacer, spacesCount)}`;
         case 'equal':
           return `${currentIndent}${node.key}: ${node.val}`;
         case 'not equal':
-          return `${shiftLeftIndent}- ${node.key}: ${node.val[0]}\n${shiftLeftIndent}+ ${node.key}: ${node.val[1]}`;
+          return `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.val[0]) ? stringify(node.val[0], depth + 1) : node.val[0]}\n${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.val[1]) ? stringify(node.val[1], depth + 1) : node.val[1]}`;
         default:
           throw new Error('Stylish switch exception.');
       }
