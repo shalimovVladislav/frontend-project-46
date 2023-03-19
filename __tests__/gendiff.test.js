@@ -1,5 +1,5 @@
 import { test, expect } from '@jest/globals';
-import genDiff from '../src/gendiff.js';
+import genDiff from '../index.js';
 
 test('flat json comparisons in stylish format', () => {
   expect(genDiff('./__fixtures__/file1.json', './__fixtures__/file2.json')).toEqual(
