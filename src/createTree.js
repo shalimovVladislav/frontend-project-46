@@ -20,9 +20,6 @@ const createTree = (node1, node2) => {
     if (node1[key] === node2[key]) {
       return { type: 'equal', key, val: node1[key] };
     }
-    if (node1[key] === node2[key]) {
-      return { type: 'equal', key, val: node1[key] };
-    }
     if (_.has(node1, key) && _.has(node2, key)) {
       return { type: 'not equal', key, val: [node1[key], node2[key]] };
     }
