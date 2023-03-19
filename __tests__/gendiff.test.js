@@ -1,7 +1,7 @@
 import { test, expect } from '@jest/globals';
 import genDiff from '../src/gendiff.js';
 
-test('flat json comparisons', () => {
+test('flat json comparisons in stylish format', () => {
   expect(genDiff('./__fixtures__/file1.json', './__fixtures__/file2.json')).toEqual(
     `{
   - follow: false
@@ -14,7 +14,7 @@ test('flat json comparisons', () => {
   );
 });
 
-test('flat yaml comparisons', () => {
+test('flat yaml comparisons in stylish format', () => {
   expect(genDiff('./__fixtures__/file1.yml', './__fixtures__/file2.yml')).toEqual(
     `{
   - follow: false
@@ -27,7 +27,7 @@ test('flat yaml comparisons', () => {
   );
 });
 
-test('nested json comparisons', () => {
+test('nested json comparisons in stylish format', () => {
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json')).toEqual(
     `{
     common: {
@@ -76,7 +76,7 @@ test('nested json comparisons', () => {
   );
 });
 
-test('nested yml comparisons', () => {
+test('nested yml comparisons in stylish format', () => {
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml')).toEqual(
     `{
     common: {
@@ -122,5 +122,37 @@ test('nested yml comparisons', () => {
         fee: 100500
     }
 }`,
+  );
+});
+
+test('nested json comparisons in plain format', () => {
+  expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'plain')).toEqual(
+    `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`,
+  );
+});
+
+test('nested yml comparisons in plain format', () => {
+  expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'plain')).toEqual(
+    `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`,
   );
 });
