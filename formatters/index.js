@@ -2,21 +2,16 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 
 const formatter = (tree, format = 'stylish') => {
-  let result;
   switch (format) {
     case 'stylish':
-      result = stylish(tree);
-      break;
+      return stylish(tree);
     case 'plain':
-      result = plain(tree);
-      break;
+      return plain(tree);
     case 'json':
-      result = JSON.stringify(tree);
-      break;
+      return JSON.stringify(tree);
     default:
       throw new Error('formatter switch exception.');
   }
-  return result;
 };
 
 export default formatter;
