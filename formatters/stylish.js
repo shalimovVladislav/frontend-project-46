@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import stringify from './stringify.js';
+import stringify from '../src/stringify.js';
 
 const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
   const iter = (nodes, depth) => {
@@ -21,7 +21,7 @@ const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
         case 'not equal':
           return `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.val[0]) ? stringify(node.val[0], depth + 1) : node.val[0]}\n${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.val[1]) ? stringify(node.val[1], depth + 1) : node.val[1]}`;
         default:
-          throw new Error('Stylish switch exception.');
+          throw new Error('stylish switch exception.');
       }
     });
 
