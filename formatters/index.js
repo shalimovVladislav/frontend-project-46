@@ -11,6 +11,7 @@ const formatter = (tree, format = 'stylish') => {
       result = plain(tree);
       break;
     case 'json':
+      result = JSON.stringify(tree);
       break;
     default:
       throw new Error('formatter switch exception.');
