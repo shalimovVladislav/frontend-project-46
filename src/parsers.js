@@ -10,9 +10,7 @@ const filePathtoObject = (filePath) => {
   if (fileExtension === '.yml' || fileExtension === '.yaml') {
     return yaml.load(file);
   }
-  if (fileExtension === '.json') {
-    return JSON.parse(file);
-  }
+  return JSON.parse(file);
 };
 
 export default filePathtoObject;
