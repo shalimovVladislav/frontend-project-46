@@ -7,23 +7,16 @@ const createTree = (node1, node2) => {
     if (_.isObject(node1[key]) && _.isObject(node2[key])) {
       return { type: 'nested', key, children: createTree(node1[key], node2[key]) };
     }
-    if ((_.has(node1, key) && _.isObject(node2[key]))
-    || (_.has(node2, key) && _.isObject(node1[key]))) {
-      return { type: 'not equal', key, val: [node1[key], node2[key]] };
-    }
-    if (_.isObject(node1[key])) {
-      return { type: 'remove', key, val: node1[key] };
-    }
-    if (_.isObject(node2[key])) {
-      return { type: 'add', key, val: node2[key] };
-    }
     if (node1[key] === node2[key]) {
       return { type: 'equal', key, val: node1[key] };
     }
-    if (_.has(node1, key) && _.has(node2, key)) {
+    if ((_.has(node1, key) && _.isObject(node2[key]))
+    || (_.has(node2, key) && _.isObject(node1[key]))
+    || (_.has(node1, key) && _.has(node2, key))) {
       return { type: 'not equal', key, val: [node1[key], node2[key]] };
     }
-    if (_.has(node1, key)) {
+    if ((_.isObject(node1[key]))
+    || (_.has(node1, key))) {
       return { type: 'remove', key, val: node1[key] };
     }
     return { type: 'add', key, val: node2[key] };
