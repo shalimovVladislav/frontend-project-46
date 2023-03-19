@@ -1,8 +1,9 @@
 import _ from 'lodash';
 
 const createTree = (node1, node2) => {
-  const keys = _.uniq([...Object.keys(node1), ...Object.keys(node2)].sort());
-  const tree = keys.map((key) => {
+  const keys = _.uniq([...Object.keys(node1), ...Object.keys(node2)]);
+  const sortedKeys = _.sortBy(keys);
+  const tree = sortedKeys.map((key) => {
     if (_.isObject(node1[key]) && _.isObject(node2[key])) {
       return { type: 'nested', key, children: createTree(node1[key], node2[key]) };
     }
