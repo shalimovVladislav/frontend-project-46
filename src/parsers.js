@@ -7,14 +7,12 @@ const filePathtoObject = (filePath) => {
   const fileExtension = path.extname(filePath);
   const correctFilePath = path.resolve(cwd(), filePath);
   const file = fs.readFileSync(correctFilePath, 'utf-8');
-  let object;
   if (fileExtension === '.yml' || fileExtension === '.yaml') {
-    object = yaml.load(file);
+    return yaml.load(file);
   }
   if (fileExtension === '.json') {
-    object = JSON.parse(file);
+    return JSON.parse(file);
   }
-  return object;
 };
 
 export default filePathtoObject;
