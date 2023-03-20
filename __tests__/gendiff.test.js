@@ -4,38 +4,54 @@ import { cwd } from 'node:process';
 import { test, expect } from '@jest/globals';
 import genDiff from '../src/index.js';
 
-test('nested json comparisons in stylish format', () => {
-  const fullFilePath = path.resolve(cwd(), './__tests__/stylish-result.txt');
-  const result = fs.readFileSync(fullFilePath, 'utf-8');
+const readingFiles = (format = 'stylish') => {
+  switch (format) {
+    case 'stylish':
+      return fs.readFileSync(path.resolve(cwd(), './__tests__/stylish-result.txt'), 'utf-8');
+    case 'plain':
+      return fs.readFileSync(path.resolve(cwd(), './__tests__/plain-result.txt'), 'utf-8');
+    case 'json':
+      return fs.readFileSync(path.resolve(cwd(), './__tests__/json-result.txt'), 'utf-8');
+    default:
+      throw new Error('readingFiles switch exception.');
+  }
+};
+
+test('nested json comparisons in default format', () => {
+  const result = readingFiles();
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json')).toEqual(result);
 });
 
-test('nested yml comparisons in stylish format', () => {
-  const fullFilePath = path.resolve(cwd(), './__tests__/stylish-result.txt');
-  const result = fs.readFileSync(fullFilePath, 'utf-8');
+test('nested yml comparisons in default format', () => {
+  const result = readingFiles();
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml')).toEqual(result);
+});
+test('nested json comparisons in stylish format', () => {
+  const result = readingFiles('stylish');
+  expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'stylish')).toEqual(result);
+});
+
+test('nested yml comparisons in stylish format', () => {
+  const result = readingFiles('stylish');
+  expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'stylish')).toEqual(result);
 });
 
 test('nested json comparisons in plain format', () => {
-  const fullFilePath = path.resolve(cwd(), './__tests__/plain-result.txt');
-  const result = fs.readFileSync(fullFilePath, 'utf-8');
+  const result = readingFiles('plain');
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'plain')).toEqual(result);
 });
 
 test('nested yml comparisons in plain format', () => {
-  const fullFilePath = path.resolve(cwd(), './__tests__/plain-result.txt');
-  const result = fs.readFileSync(fullFilePath, 'utf-8');
+  const result = readingFiles('plain');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'plain')).toEqual(result);
 });
 
 test('nested json comparisons in json format', () => {
-  const fullFilePath = path.resolve(cwd(), './__tests__/json-result.txt');
-  const result = fs.readFileSync(fullFilePath, 'utf-8');
+  const result = readingFiles('json');
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'json')).toEqual(result);
 });
 
 test('nested yml comparisons in json format', () => {
-  const fullFilePath = path.resolve(cwd(), './__tests__/json-result.txt');
-  const result = fs.readFileSync(fullFilePath, 'utf-8');
+  const result = readingFiles('json');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'json')).toEqual(result);
 });
