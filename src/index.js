@@ -15,8 +15,6 @@ const genDiff = (filePath1, filePath2, format) => {
   const obj1 = parsers(file1, fileExtension1);
   const obj2 = parsers(file2, fileExtension2);
   const tree = createTree(obj1, obj2);
-  console.log(JSON.stringify(tree));
-  console.log('\n');
   const result = formatter(tree, format);
   return result;
 };
