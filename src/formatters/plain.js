@@ -1,5 +1,22 @@
 import _ from 'lodash';
 
+const excludeСaseEqual = (nodeArray) => {
+  const iter = (nodes) => {
+    const result = nodes.reduce((acc, {
+      type, key, val, children,
+    }) => {
+      if (type === 'equal') {
+        return acc;
+      }
+      if (type === 'nested') {
+        return [...acc, { type, key, children: iter(children) }];
+      }
+      return [...acc, { type, key, val }];
+    }, []);
+    return result;
+  };
+  return iter(nodeArray);
+};
 const stringifyPlain = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
@@ -10,6 +27,7 @@ const stringifyPlain = (value) => {
   return `${value}`;
 };
 const plain = (nodesArray) => {
+  const filteredNodesArray = excludeСaseEqual(nodesArray);
   const iter = (nodes, path) => {
     const lines = nodes.map((node) => {
       switch (node.type) {
@@ -34,9 +52,9 @@ const plain = (nodesArray) => {
     });
     return [
       ...lines,
-    ].filter((line) => line !== '').join('\n');
+    ].join('\n');
   };
-  return iter(nodesArray, []);
+  return iter(filteredNodesArray, []);
 };
 
 export default plain;
