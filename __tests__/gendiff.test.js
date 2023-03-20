@@ -4,13 +4,13 @@ import { cwd } from 'node:process';
 import { test, expect } from '@jest/globals';
 import genDiff from '../src/index.js';
 
-test('nested comparisons in stylish format', () => {
+test('nested json comparisons in stylish format', () => {
   const fullFilePath = path.resolve(cwd(), './__tests__/stylish-result.txt');
   const result = fs.readFileSync(fullFilePath, 'utf-8');
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json')).toEqual(result);
 });
 
-test('nested comparisons in stylish format', () => {
+test('nested yml comparisons in stylish format', () => {
   const fullFilePath = path.resolve(cwd(), './__tests__/stylish-result.txt');
   const result = fs.readFileSync(fullFilePath, 'utf-8');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml')).toEqual(result);
