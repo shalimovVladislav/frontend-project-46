@@ -6,6 +6,16 @@ GenDiff is a program that determines the difference between two data structures.
 * Support for different input formats: yaml, json
 * Report generation in the form of plain text, stylish and json
 
+### Reference Information:
+Usage: gendiff [options] <filepath1> <filepath2>
+
+Compares two configuration files and shows a difference.
+
+Options:<br />
+-V, --version        output the version number<br />
+-f, --format <type>  output format (choices: "stylish", "plain", "json", default: "stylish")<br />
+ -h, --help           display help for command<br />
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/vladshal/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/vladshal/frontend-project-46/actions)
 [![gendiff](https://github.com/vladshal/frontend-project-46/actions/workflows/gendiff.yml/badge.svg)](https://github.com/vladshal/frontend-project-46/actions/workflows/gendiff.yml)
