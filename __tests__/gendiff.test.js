@@ -17,41 +17,26 @@ const readingFiles = (format = 'stylish') => {
   }
 };
 
-test('nested json comparisons in default format', () => {
+test('nested comparisons in default format', () => {
   const result = readingFiles();
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json')).toEqual(result);
-});
-
-test('nested yml comparisons in default format', () => {
-  const result = readingFiles();
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml')).toEqual(result);
 });
-test('nested json comparisons in stylish format', () => {
+
+test('nested comparisons in stylish format', () => {
   const result = readingFiles('stylish');
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'stylish')).toEqual(result);
-});
-
-test('nested yml comparisons in stylish format', () => {
-  const result = readingFiles('stylish');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'stylish')).toEqual(result);
 });
 
-test('nested json comparisons in plain format', () => {
+test('nested comparisons in plain format', () => {
   const result = readingFiles('plain');
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'plain')).toEqual(result);
-});
-
-test('nested yml comparisons in plain format', () => {
-  const result = readingFiles('plain');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'plain')).toEqual(result);
 });
 
-test('nested json comparisons in json format', () => {
+test('nested comparisons in json format', () => {
   const result = readingFiles('json');
   expect(genDiff('./__fixtures__/file3.json', './__fixtures__/file4.json', 'json')).toEqual(result);
-});
-
-test('nested yml comparisons in json format', () => {
-  const result = readingFiles('json');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'json')).toEqual(result);
 });
