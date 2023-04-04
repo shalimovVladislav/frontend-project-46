@@ -32,15 +32,15 @@ const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
       switch (node.type) {
         case 'nested':
           return `${currentIndent}${node.key}: ${iter(node.children, depth + 1)}`;
-        case 'remove':
-          return `${shiftLeftIndent}- ${node.key}: ${stringify(node.val, depth + 1, replacer, spacesCount)}`;
-        case 'add':
-          return `${shiftLeftIndent}+ ${node.key}: ${stringify(node.val, depth + 1, replacer, spacesCount)}`;
+        case 'removed':
+          return `${shiftLeftIndent}- ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
+        case 'added':
+          return `${shiftLeftIndent}+ ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
         case 'equal':
-          return `${currentIndent}${node.key}: ${node.val}`;
-        case 'not equal':
-          return `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.val[0]) ? stringify(node.val[0], depth + 1) : node.val[0]}
-${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.val[1]) ? stringify(node.val[1], depth + 1) : node.val[1]}`;
+          return `${currentIndent}${node.key}: ${node.value}`;
+        case 'modified':
+          return `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.oldValue) ? stringify(node.oldValue, depth + 1) : node.oldValue}
+${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.newValue) ? stringify(node.newValue, depth + 1) : node.newValue}`;
         default:
           throw new Error('stylish switch exception.');
       }
