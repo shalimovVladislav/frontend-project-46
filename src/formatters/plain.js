@@ -44,8 +44,6 @@ const plain = (nodesArray) => {
           const stringifyValue = stringifyPlain(node.value);
           return `Property '${[...path, node.key].join('.')}' was added with value: ${stringifyValue}`;
         }
-        case 'equal':
-          return '';
         case 'modified': {
           const stringifyOldValue = stringifyPlain(node.oldValue);
           const stringifyNewValue = stringifyPlain(node.newValue);
@@ -55,9 +53,7 @@ const plain = (nodesArray) => {
           throw new Error('plain switch exception.');
       }
     });
-    return [
-      ...lines,
-    ].join('\n');
+    return lines.join('\n');
   };
   return iter(filteredNodesArray, []);
 };
