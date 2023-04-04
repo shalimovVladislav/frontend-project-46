@@ -2,7 +2,8 @@ import _ from 'lodash';
 
 const createTree = (before, after) => {
   const keys = _.union(Object.keys(before), Object.keys(after));
-  const result = keys.sort().map((key) => {
+  const sortedKeys = _.sortBy(keys);
+  const result = sortedKeys.map((key) => {
     if (_.isObject(before[key]) && _.isObject(after[key])) {
       return { type: 'nested', key, children: createTree(before[key], after[key]) };
     }
