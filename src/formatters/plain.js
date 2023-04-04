@@ -22,9 +22,7 @@ const plain = (nodesArray) => {
           return `Property '${[...path, node.key].join('.')}' was added with value: ${stringifyValue}`;
         }
         case 'modified': {
-          const stringifyOldValue = stringifyPlain(node.oldValue);
-          const stringifyNewValue = stringifyPlain(node.newValue);
-          return `Property '${[...path, node.key].join('.')}' was updated. From ${stringifyOldValue} to ${stringifyNewValue}`;
+          return `Property '${[...path, node.key].join('.')}' was updated. From ${stringifyPlain(node.oldValue)} to ${stringifyPlain(node.newValue)}`;
         }
         case 'equal': {
           return [];
