@@ -28,7 +28,7 @@ const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
     const shiftLeftIndent = replacer.repeat(indentSize - 2);
     const bracketIndent = replacer.repeat(indentSize - spacesCount);
 
-    const lines = nodes.map((node) => {
+    const lines = nodes.flatMap((node) => {
       switch (node.type) {
         case 'nested':
           return `${currentIndent}${node.key}: ${iter(node.children, depth + 1)}`;
@@ -39,18 +39,16 @@ const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
         case 'equal':
           return `${currentIndent}${node.key}: ${node.value}`;
         case 'modified':
-          return `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.oldValue) ? stringify(node.oldValue, depth + 1) : node.oldValue}
-${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.newValue) ? stringify(node.newValue, depth + 1) : node.newValue}`;
+          return [
+            `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.oldValue) ? stringify(node.oldValue, depth + 1) : node.oldValue}`,
+            `${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.newValue) ? stringify(node.newValue, depth + 1) : node.newValue}`,
+          ];
         default:
-          throw new Error('stylish switch exception.');
+          throw new Error(`Unknown type of data: ${node.type}`);
       }
     });
 
-    return [
-      '{',
-      ...lines,
-      `${bracketIndent}}`,
-    ].join('\n');
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };
 
   return iter(nodesArray, 1);
