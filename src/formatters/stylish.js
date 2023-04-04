@@ -1,6 +1,9 @@
 import _ from 'lodash';
 
-const stringify = (initialNode, initialDepth, replacer = ' ', spacesCount = 4) => {
+const replacer = ' ';
+const spacesCount = 4;
+
+const stringify = (initialNode, initialDepth) => {
   const iter = (node, depth) => {
     if (!_.isObject(node)) {
       return `${node}`;
@@ -21,27 +24,31 @@ const stringify = (initialNode, initialDepth, replacer = ' ', spacesCount = 4) =
   return iter(initialNode, initialDepth);
 };
 
-const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
-  const iter = (nodes, depth) => {
-    const indentSize = depth * spacesCount;
-    const currentIndent = replacer.repeat(indentSize);
-    const shiftLeftIndent = replacer.repeat(indentSize - 2);
-    const bracketIndent = replacer.repeat(indentSize - spacesCount);
+const getIndentSize = (depth) => depth * spacesCount;
 
+const getCurrentIndent = (indentSize) => replacer.repeat(indentSize - 2);
+
+const getBracketIndent = (indentSize) => replacer.repeat(indentSize - spacesCount);
+
+const stylish = (nodesArray) => {
+  const iter = (nodes, depth) => {
+    const indentSize = getIndentSize(depth);
+    const currentIndent = getCurrentIndent(indentSize);
+    const bracketIndent = getBracketIndent(indentSize);
     const lines = nodes.flatMap((node) => {
       switch (node.type) {
         case 'nested':
-          return `${currentIndent}${node.key}: ${iter(node.children, depth + 1)}`;
+          return `${currentIndent}  ${node.key}: ${iter(node.children, depth + 1)}`;
         case 'removed':
-          return `${shiftLeftIndent}- ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
+          return `${currentIndent}- ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
         case 'added':
-          return `${shiftLeftIndent}+ ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
+          return `${currentIndent}+ ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
         case 'equal':
-          return `${currentIndent}${node.key}: ${node.value}`;
+          return `${currentIndent}  ${node.key}: ${node.value}`;
         case 'modified':
           return [
-            `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.oldValue) ? stringify(node.oldValue, depth + 1) : node.oldValue}`,
-            `${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.newValue) ? stringify(node.newValue, depth + 1) : node.newValue}`,
+            `${currentIndent}- ${node.key}: ${_.isObject(node.oldValue) ? stringify(node.oldValue, depth + 1) : node.oldValue}`,
+            `${currentIndent}+ ${node.key}: ${_.isObject(node.newValue) ? stringify(node.newValue, depth + 1) : node.newValue}`,
           ];
         default:
           throw new Error(`Unknown type of data: ${node.type}`);
