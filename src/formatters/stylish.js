@@ -28,23 +28,22 @@ const stylish = (nodesArray, replacer = ' ', spacesCount = 4) => {
     const shiftLeftIndent = replacer.repeat(indentSize - 2);
     const bracketIndent = replacer.repeat(indentSize - spacesCount);
 
-    const lines = nodes.map(({
-      type, key, value, children, oldValue, newValue,
-    }) => {
-      if (type === 'nested') {
-        return `${currentIndent}${key}: ${iter(children, depth + 1)}`;
+    const lines = nodes.map((node) => {
+      switch (node.type) {
+        case 'nested':
+          return `${currentIndent}${node.key}: ${iter(node.children, depth + 1)}`;
+        case 'removed':
+          return `${shiftLeftIndent}- ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
+        case 'added':
+          return `${shiftLeftIndent}+ ${node.key}: ${stringify(node.value, depth + 1, replacer, spacesCount)}`;
+        case 'equal':
+          return `${currentIndent}${node.key}: ${node.value}`;
+        case 'modified':
+          return `${shiftLeftIndent}- ${node.key}: ${_.isObject(node.oldValue) ? stringify(node.oldValue, depth + 1) : node.oldValue}
+${shiftLeftIndent}+ ${node.key}: ${_.isObject(node.newValue) ? stringify(node.newValue, depth + 1) : node.newValue}`;
+        default:
+          throw new Error('stylish switch exception.');
       }
-      if (type === 'removed') {
-        return `${shiftLeftIndent}- ${key}: ${stringify(value, depth + 1, replacer, spacesCount)}`;
-      }
-      if (type === 'added') {
-        return `${shiftLeftIndent}+ ${key}: ${stringify(value, depth + 1, replacer, spacesCount)}`;
-      }
-      if (type === 'equal') {
-        return `${currentIndent}${key}: ${value}`;
-      }
-      return `${shiftLeftIndent}- ${key}: ${_.isObject(oldValue) ? stringify(oldValue, depth + 1) : oldValue}
-${shiftLeftIndent}+ ${key}: ${_.isObject(newValue) ? stringify(newValue, depth + 1) : newValue}`;
     });
 
     return [
