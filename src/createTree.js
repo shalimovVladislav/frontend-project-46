@@ -15,7 +15,9 @@ const createTree = (before, after) => {
     if (_.has(before, key) && !_.has(after, key)) {
       return { type: 'removed', key, value: before[key] };
     }
-    return { type: 'modified', key, oldValue: before[key], newValue: after[key]};
+    return {
+      type: 'modified', key, oldValue: before[key], newValue: after[key],
+    };
   });
 
   return result;
