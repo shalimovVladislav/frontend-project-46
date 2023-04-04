@@ -1,14 +1,16 @@
 import yaml from 'js-yaml';
-
-const parsers = (data, fileExtension) => {
-  switch (fileExtension) {
-    case '.yml' || '.yaml':
-      return yaml.load(data);
-    case '.json':
-      return JSON.parse(data);
-    default:
-      throw new Error('parsers switch exception.');
-  }
+const parsers = {
+  '.yml': yaml.load,
+  '.yaml': yaml.load,
+  '.json': JSON.parse,
 };
 
-export default parsers;
+const parseData = (data, extension) => {
+  const parser = parsers[extension];
+  if (!parser) {
+    throw new Error(`Unsupported file extension: ${extension}`)
+  }
+  return parser(data);
+};
+
+export default parseData;
