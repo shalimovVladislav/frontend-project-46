@@ -1,27 +1,5 @@
 import _ from 'lodash';
 
-const excludeСaseEqual = (nodeArray) => {
-  const iter = (nodes) => {
-    const result = nodes.reduce((acc, {
-      type, key, value, children, newValue, oldValue,
-    }) => {
-      if (type === 'equal') {
-        return acc;
-      }
-      if (type === 'modified') {
-        return [...acc, {
-          type, key, newValue, oldValue,
-        }];
-      }
-      if (type === 'nested') {
-        return [...acc, { type, key, children: iter(children) }];
-      }
-      return [...acc, { type, key, value }];
-    }, []);
-    return result;
-  };
-  return iter(nodeArray);
-};
 const stringifyPlain = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
@@ -32,9 +10,8 @@ const stringifyPlain = (value) => {
   return `${value}`;
 };
 const plain = (nodesArray) => {
-  const filteredNodesArray = excludeСaseEqual(nodesArray);
   const iter = (nodes, path) => {
-    const lines = nodes.map((node) => {
+    const lines = nodes.flatMap((node) => {
       switch (node.type) {
         case 'nested':
           return iter(node.children, [...path, node.key]);
@@ -49,13 +26,16 @@ const plain = (nodesArray) => {
           const stringifyNewValue = stringifyPlain(node.newValue);
           return `Property '${[...path, node.key].join('.')}' was updated. From ${stringifyOldValue} to ${stringifyNewValue}`;
         }
+        case 'equal': {
+          return [];
+        }
         default:
           throw new Error('plain switch exception.');
       }
     });
     return lines.join('\n');
   };
-  return iter(filteredNodesArray, []);
+  return iter(nodesArray, []);
 };
 
 export default plain;
