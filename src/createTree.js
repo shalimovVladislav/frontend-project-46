@@ -1,28 +1,24 @@
 import _ from 'lodash';
 
-const createTree = (node1, node2) => {
-  const keys = _.uniq([...Object.keys(node1), ...Object.keys(node2)]);
-  const sortedKeys = _.sortBy(keys);
-  const tree = sortedKeys.map((key) => {
-    if (_.isObject(node1[key]) && _.isObject(node2[key])) {
-      return { type: 'nested', key, children: createTree(node1[key], node2[key]) };
+const createTree = (before, after) => {
+  const keys = _.union(Object.keys(before), Object.keys(after)).sort();
+  const result = keys.map((key) => {
+    if (_.isObject(before[key]) && _.isObject(after[key])) {
+      return { type: 'nested', key, children: createTree(before[key], after[key]) };
     }
-    if (node1[key] === node2[key]) {
-      return { type: 'equal', key, val: node1[key] };
+    if (before[key] === after[key]) {
+      return { type: 'equal', key, value: before[key] };
     }
-    if ((_.has(node1, key) && _.isObject(node2[key]))
-    || (_.has(node2, key) && _.isObject(node1[key]))
-    || (_.has(node1, key) && _.has(node2, key))) {
-      return { type: 'not equal', key, val: [node1[key], node2[key]] };
+    if (!_.has(before, key) && _.has(after, key)) {
+      return { type: 'added', key, value: after[key] };
     }
-    if ((_.isObject(node1[key]))
-    || (_.has(node1, key))) {
-      return { type: 'remove', key, val: node1[key] };
+    if (_.has(before, key) && !_.has(after, key)) {
+      return { type: 'removed', key, value: before[key] };
     }
-    return { type: 'add', key, val: node2[key] };
+    return { type: 'modified', key, oldValue: before[key], newValue: after[key]};
   });
 
-  return tree;
+  return result;
 };
 
 export default createTree;
