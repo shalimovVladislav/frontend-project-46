@@ -9,7 +9,9 @@ const excludeСaseEqual = (nodeArray) => {
         return acc;
       }
       if (type === 'modified') {
-        return [...acc, { type, key, newValue, oldValue }];
+        return [...acc, {
+          type, key, newValue, oldValue,
+        }];
       }
       if (type === 'nested') {
         return [...acc, { type, key, children: iter(children) }];
